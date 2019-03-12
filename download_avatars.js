@@ -1,3 +1,6 @@
+var repoOwner = process.argv[2];
+var repoName = process.argv[3];
+
 var request = require('request');
 var secretReq = require('./secret');
 
@@ -18,7 +21,6 @@ function getRepoContributors(repoOwner, repoName, cb) {
     var users = JSON.parse(body);
     for (var user of users) {
       cb(user.avatar_url, `./avatars/${user.login}.jpeg`);
-      console.log(user.login);
   }
 });
 
@@ -55,4 +57,4 @@ function downloadImageByURL(url, filePath) {
 // console.log("Result:", result);
 
 
-getRepoContributors('jquery', 'jquery', downloadImageByURL)
+getRepoContributors(repoOwner, repoName, downloadImageByURL)
