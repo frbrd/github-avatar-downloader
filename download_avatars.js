@@ -13,21 +13,46 @@ function getRepoContributors(repoOwner, repoName, cb) {
     }
   };
 
-  
-  
   request(options, function(err, res, body) {
-    cb(err, body);
-  });
-}
-
-getRepoContributors("jquery", "jquery", function(err, result) {
-  var users = JSON.parse(result);
-  for (var user of users) {
-    console.log(user.avatar_url);
+   // cb(err, body);
+    var users = JSON.parse(body);
+    for (var user of users) {
+      cb(user.avatar_url, `./avatars/${user.login}.jpeg`);
+      console.log(user.login);
   }
-
-  
-  // console.log("Errors:", err);
-  // console.log("Result:", result);
 });
 
+}
+  
+  
+
+
+// getRepoContributors("jquery", "jquery", function(err, result);
+
+  
+//   // console.log("Errors:", err);
+//   // console.log("Result:", result);
+// });
+
+
+function downloadImageByURL(url, filePath) {
+  var fs = require('fs');        
+  request.get(url)
+    .on('error', function (err) {
+      throw err;
+    })
+    .on('response', function (response) {
+      console.log('Downloading');
+      response.headers['jpeg']               
+    })
+    .on('end', function (end) {
+      console.log('Nice job! Downloaded.')
+    })
+    .pipe(fs.createWriteStream(filePath));
+}    
+
+// console.log("Errors:", err);
+// console.log("Result:", result);
+
+
+getRepoContributors('jquery', 'jquery', downloadImageByURL)
